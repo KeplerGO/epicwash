@@ -6,14 +6,13 @@ This Python module adds two tools to the command line,
 `epicwash` and `epicwash-prepare`, that allow pre-existing
 or duplicate entries to be removed from new K2 EPIC catalogs.
 
-## Requirements
-
-This tool will only work on a Linux-like system
-with `sed` and `java` installed.
-
 ## Installation
 
-Install the tool from this git repository as follows:
+This tool requires a Linux-like system
+with `java` and `sed` available on the command line,
+and a working `python` installation.
+
+If these requirements are met, you can install the tool from this git repository as follows:
 ```
 $ git clone https://github.com/KeplerGO/epicwash.git
 $ cd epicwash
