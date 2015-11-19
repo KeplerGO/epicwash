@@ -6,47 +6,50 @@ This Python module adds two tools to the command line,
 `epicwash` and `epicwash-prepare`, that allow pre-existing
 or duplicate entries to be removed from new K2 EPIC catalogs.
 
-## Requirements
-
-This tool will only work on a Linux-like system
-with `sed` and `java` installed.
+This repository is unlikely to be of any interest to you,
+unless you are the soul in charge of producing the EPIC catalog
+for a new K2 Campaign!
 
 ## Installation
 
-Install the tool from this git repository as follows:
+This tool requires a Linux-like system
+with `java` and `sed` available on the command line,
+and a working `python` installation.
+
+If these requirements are met, you can install the tool from this git repository as follows:
 ```
 $ git clone https://github.com/KeplerGO/epicwash.git
 $ cd epicwash
 $ python setup.py install
 ```
+The `setup.py` script will automatically take care of installing two required dependencies (`stilts` and `csvkit`).
 
 ## Example usage
 
-The following steps demonstrate how to remove pre-existing and duplicate
-entries from the original EPIC Campaign 11 catalog file produced by the EPIC IDL code,
-which we will call `c11.dmc.dat`.
+The following steps demonstrate how to *wash* the K2 EPIC Campaign 12 catalog,
+starting from the original catalog file produced by the EPIC IDL code
+which we call `c12.dmc.dat` in this example.
 
-Because C11 overlaps with C3, we first need to use `epicwash-prepare` to
-create a table that contains all the coordinates of sources that were previously added
-to the EPIC catalog in the C3 area.
-Preparing such a table is the task of the `epicwash-prepare` tool:
+Because C12 overlaps with C3, we first need to create a special binary table
+that contains all the coordinates of sources previously added to the C3 EPIC catalog.
+This is done using the `epicwash-prepare` tool as follows:
 
 ```
 $ epicwash-prepare --output epic.fits d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
 ```
 
-... where the *.gz files are relevant EPIC catalog files [obtained from MAST](https://archive.stsci.edu/pub/k2/catalogs/),
-and `epic.fits` is the name of the binary coordinates table that is created from these files.
+... where the *.gz files are the EPIC catalog files [obtained from MAST](https://archive.stsci.edu/pub/k2/catalogs/) that overlap with C12, and `epic.fits` is the name of the binary table that the tool will produce.
 
-Next, we use the `epicwash` command to take our `c11.dmc.dat` file
-and remove any sources that already appear in `epic.fits`:
+Next, we use this newly-created `epic.fits` file to remove overlapping sources from `c12.dmc.dat` using the `epicwash` command.:
 
 ```
-epicwash --epic epic.fits --output c11-fixed.dmc.dat c11.dmc.dat
+$ epicwash --epic epic.fits --output c12-fixed.dmc.dat c12.dmc.dat
 ```
 
-This produces the file `c11-fixed.dmc.dat`, which should not contain
-any duplicates!
+This produces the file `c12-fixed.dmc.dat`, which should not contain
+any duplicates.
+
+Next step: party, we're done!
 
 
 ## Documentation
