@@ -6,6 +6,10 @@ This Python module adds two tools to the command line,
 `epicwash` and `epicwash-prepare`, that allow pre-existing
 or duplicate entries to be removed from new K2 EPIC catalogs.
 
+This repository is unlikely to be of any interest to you,
+unless you are the soul in charge of producing the EPIC catalog
+for a new K2 Campaign!
+
 ## Installation
 
 This tool requires a Linux-like system
@@ -13,7 +17,7 @@ with `java` and `sed` available on the command line,
 and a working `python` installation.
 
 If these requirements are met, you can install the tool from this git repository as follows:
-```
+```bash
 $ git clone https://github.com/KeplerGO/epicwash.git
 $ cd epicwash
 $ python setup.py install
@@ -29,7 +33,7 @@ Because C12 overlaps with C3, we need to create a special table
 that lists all the coordinates of sources already added to the EPIC catalog for C3.
 This is done using the `epicwash-prepare` tool as follows:
 
-```
+```shell
 $ epicwash-prepare --output epic.fits d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
 ```
 
@@ -39,7 +43,7 @@ Next, we use the `epicwash` command to take our `c12.dmc.dat` file
 and remove any sources that already appear in `epic.fits`:
 
 ```
-epicwash --epic epic.fits --output c11-fixed.dmc.dat c11.dmc.dat
+$ epicwash --epic epic.fits --output c11-fixed.dmc.dat c11.dmc.dat
 ```
 
 This produces the file `c11-fixed.dmc.dat`, which should not contain
