@@ -1,8 +1,8 @@
 # K2 EPIC Catalog Washer
 
-***Prevents K2 EPIC catalogues from containing pre-existing or duplicate entries."""
+***Prevents K2 EPIC catalogues from containing pre-existing or duplicate entries.***
 
-This Python module adds to tools to the command line,
+This Python module adds two tools to the command line,
 `epicwash` and `epicwash-prepare`, that allow pre-existing
 or duplicate entries to be removed from new K2 EPIC catalogs.
 
@@ -13,6 +13,7 @@ with `sed` and `java` installed.
 
 ## Installation
 
+Install the tool from this git repository as follows:
 ```
 $ git clone https://github.com/KeplerGO/epicwash.git
 $ cd epicwash
@@ -22,27 +23,29 @@ $ python setup.py install
 ## Example usage
 
 The following steps demonstrate how to remove pre-existing and duplicate
-entries from the EPIC Campaign 11 catalog.
+entries from the original EPIC Campaign 11 catalog file produced by the EPIC IDL code,
+which we will call `c11.dmc.dat`.
 
 Because C11 overlaps with C3, we first need to use `epicwash-prepare` to
-create a table that contains all the coordinates of sources that were previously added to the EPIC catalog for C3.
-Such a table can be prepared as follows:
+create a table that contains all the coordinates of sources that were previously added
+to the EPIC catalog in the C3 area.
+Preparing such a table is the task of the `epicwash-prepare` tool:
 
 ```
-$ epicwash-prepare d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
+$ epicwash-prepare --output epic.fits d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
 ```
 
 This commands creates a binary FITS table called `epic.fits`.
 
-Next, we use the `epicwash` command to remove any duplicates,
-or any sources already appearing in `epic.fits`, as follows:
+Next, we use the `epicwash` command to take our `c11.dmc.dat` file
+and remove any sources that already appear in `epic.fits`:
 
 ```
-epicwash c11.dmc.dat -e ../../mast/epic.fits
+epicwash --epic epic.fits --output c11-fixed.dmc.dat c11.dmc.dat
 ```
 
-This produces the file `c11.dmc.dat.epicwash`, representing the
-cleaned-up catalog in DMC format.
+This produces the file `c11-fixed.dmc.dat`, which should not contain
+any duplicates!
 
 
 ## Documentation
