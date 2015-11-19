@@ -22,6 +22,7 @@ $ git clone https://github.com/KeplerGO/epicwash.git
 $ cd epicwash
 $ python setup.py install
 ```
+The `setup.py` script will automatically take care of installing two required dependencies (`stilts` and `csvkit`).
 
 ## Example usage
 
