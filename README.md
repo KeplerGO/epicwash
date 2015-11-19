@@ -32,7 +32,7 @@ which we call `c12.dmc.dat` in this example.
 
 Because C12 overlaps with C3, we first need to create a special binary table
 that contains all the coordinates of sources previously added to the C3 EPIC catalog.
-This is done using the `epicwash-prepare` tool as follows:
+This is done on the command line using the `epicwash-prepare` tool as follows:
 
 ```
 $ epicwash-prepare --output epic.fits d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
