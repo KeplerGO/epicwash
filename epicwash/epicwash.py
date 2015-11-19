@@ -32,7 +32,7 @@ def convert_to_csv(input_fn, output_fn):
     syscall("""sed "s/|/,/g" {0} > {1}""".format(input_fn, output_fn))
 
 
-def remove_duplicates(input_fn, output_fn, matching_radius=0.05):
+def remove_duplicates(input_fn, output_fn, matching_radius=0.1):
     """Removes any source appearing more than once at the same position."""
     cfg = {
             "java": JAVA,
@@ -53,7 +53,7 @@ def remove_duplicates(input_fn, output_fn, matching_radius=0.05):
 
 
 def remove_existing_epic_sources(input_fn, output_fn, epic_fn,
-                                 matching_radius=0.05):
+                                 matching_radius=0.1):
     cfg = {
             "java": JAVA,
             "stilts": STILTS,
@@ -99,7 +99,7 @@ def convert_to_dmc(input_fn, output_fn):
     syscall("""sed "s/,/|/g" {} > {}""".format(input_fn, output_fn))
 
 
-def epicwash(input_fn, output_fn=None, epic_fn=None, matching_radius=0.05):
+def epicwash(input_fn, output_fn=None, epic_fn=None, matching_radius=0.1):
     """Main function to carry out the wasching task."""
     if output_fn is None:
         output_fn = input_fn + ".epicwash"
@@ -142,9 +142,9 @@ def epicwash_main(args=None):
                         help="output filename, defaults to the input path "
                              "with the '.epicwash' suffix added.")
     parser.add_argument('-m', '--matching-radius',
-                        type=float, default=0.05,
+                        type=float, default=0.1,
                         help="cross-matching distance in arcsec "
-                             "(default: 0.05)")
+                             "(default: 0.1)")
     parser.add_argument('-e', '--epic', metavar='FITSFILE',
                         type=str, default=None,
                         help="FITS table containing coordinates of pre-existing "
@@ -159,7 +159,7 @@ def epicwash_main(args=None):
              matching_radius=args.matching_radius)
 
 
-def epicwash_prepare(inputfiles, output_fn, matching_radius=0.05):
+def epicwash_prepare(inputfiles, output_fn, matching_radius=0.1):
     """Extract ra/dec from a set of EPIC catalogs and write them to FITS."""
     if inputfiles[0].endswith("gz"):
         mycat = "zcat"
@@ -221,9 +221,9 @@ def epicwash_prepare_main(args=None):
                         type=str, default="epic.fits",
                         help="output filename (default: epic.fits)")
     parser.add_argument('-m', '--matching-radius',
-                        type=float, default=0.05,
+                        type=float, default=0.1,
                         help="cross-matching distance in arcsec "
-                             "(default: 0.05)")
+                             "(default: 0.1)")
     parser.add_argument('filename', nargs="+",
                         help='EPIC catalog in DMC format')
     args = parser.parse_args(args)
