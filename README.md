@@ -35,7 +35,8 @@ Preparing such a table is the task of the `epicwash-prepare` tool:
 $ epicwash-prepare --output epic.fits d14273_01_epic_c3_dmc.mrg.gz d1497_01_epic_c23_dmc.mrg.gz
 ```
 
-This commands creates a binary FITS table called `epic.fits`.
+... where the *.gz files are relevant EPIC catalog files [obtained from MAST](https://archive.stsci.edu/pub/k2/catalogs/),
+and `epic.fits` is the name of the binary coordinates table that is created from these files.
 
 Next, we use the `epicwash` command to take our `c11.dmc.dat` file
 and remove any sources that already appear in `epic.fits`:
