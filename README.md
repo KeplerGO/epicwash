@@ -45,7 +45,7 @@ epicwash --epic epic.fits --output c11-fixed.dmc.dat c11.dmc.dat
 This produces the file `c11-fixed.dmc.dat`, which should not contain
 any duplicates.
 
-Next step: party!
+Next step: party, we're done!
 
 
 ## Documentation
