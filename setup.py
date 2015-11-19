@@ -14,6 +14,7 @@ setup(name='epicwash',
       author='Geert Barentsen',
       author_email='hello@geert.io',
       packages=['epicwash'],
+      data_files=[('epicwash/lib', ['epicwash/lib/stilts.jar'])],
       install_requires=['csvkit'],
       entry_points=entry_points,
       )

@@ -22,7 +22,7 @@ def syscall(cmd, silent=False):
     logging.debug(cmd)
     status = os.system(cmd)
     if status != 0 and not silent:
-        log.error("System call returned {}\n"
+        logging.error("System call returned {}\n"
                   "command was: {}".format(status, cmd))
     return status
 
