@@ -1,4 +1,6 @@
 """Prevents new K2 EPIC catalogs from containing duplicate entries."""
+from __future__ import print_function
+
 import os
 import re
 import argparse
@@ -69,29 +71,6 @@ def remove_existing_epic_sources(input_fn, output_fn, epic_fn,
              values1="col10 col11" values2="col1 col2" \
              join=1not2 out={output_fn} ofmt=csv""".format(**cfg)
     syscall(cmd)
-
-
-def assign_epicids(input_fn, output_fn):
-    """Assigns EPIC IDs to each row in the catalog.
-
-    This is pretty memory intense at present :-(
-    """
-    # Open the input
-    logging.info("Opening {}".format(input_fn))
-    infile = open(input_fn, "r")
-    # Open the output
-    logging.info("Writing {}".format(output_fn))
-    outfile = open(output_fn, "w")
-    # Start numbering!
-    epic_id = EPIC_START
-    for line in infile.readlines():
-        # We assume that the EPIC ID is the first column
-        # in a pipe-delimited csv file
-        outfile.write(re.sub("^.[^,]*", str(epic_id), line))
-        epic_id += 1
-    # Clean up
-    outfile.close()
-    infile.close()
 
 
 def convert_to_dmc(input_fn, output_fn):
@@ -232,6 +211,50 @@ def epicwash_prepare_main(args=None):
                      output_fn=args.output,
                      matching_radius=args.matching_radius)
 
+
+def epicwash_renumber(input_fn, output_fn, epic_start):
+    """Assigns new EPIC IDs to each row in a DMC catalog.
+
+    This is pretty memory intense :-(
+    """
+    if output_fn is None:
+        output_fn = input_fn + "-renumbered"
+    # Open the input
+    print("Opening {}.".format(input_fn))
+    infile = open(input_fn, "r")
+    # Open the output
+    print("Writing {}.".format(output_fn))
+    outfile = open(output_fn, "w")
+    # Start numbering!
+    epic_id = epic_start
+    print("The first EPIC ID assigned is {}.".format(epic_id))
+    for line in infile.readlines():
+        # We assume that the EPIC ID is the first column
+        # in a pipe-delimited csv file
+        outfile.write(re.sub("^.[^|]*", str(epic_id), line))
+        epic_id += 1
+    # Clean up
+    outfile.close()
+    infile.close()
+    print("The final EPIC ID assigned is {}.".format(epic_id - 1))
+
+
+def epicwash_renumber_main(args=None):
+    """Exposes the epicwash_renumber() function to the command line."""
+    parser = argparse.ArgumentParser(
+                    description="Assigns new EPIC IDs to all catalog entries.")
+    parser.add_argument('-o', '--output', metavar='FILENAME',
+                        type=str, default=None,
+                        help="output filename. Adds suffix '-renumbered' by default.")
+    parser.add_argument('filename', type=str,
+                        help='EPIC catalog in DMC format')
+    parser.add_argument('epicid', type=int,
+                        help='Desired EPIC ID of the first entry.')
+    args = parser.parse_args(args)
+
+    epicwash_renumber(input_fn=args.filename,
+                      output_fn=args.output,
+                      epic_start=args.epicid)
 
 if __name__ == "__main__":
     epicwash_main()

@@ -4,7 +4,8 @@ from setuptools import setup
 # Command-line tools
 entry_points = {'console_scripts': [
     'epicwash = epicwash.epicwash:epicwash_main',
-    'epicwash-prepare = epicwash.epicwash:epicwash_prepare_main'
+    'epicwash-prepare = epicwash.epicwash:epicwash_prepare_main',
+    'epicwash-renumber = epicwash.epicwash:epicwash_renumber_main'
 ]}
 
 setup(name='epicwash',

@@ -2,9 +2,10 @@
 
 ***Prevents K2 EPIC catalogues from containing pre-existing or duplicate entries.***
 
-This Python module adds two tools to the command line,
-`epicwash` and `epicwash-prepare`, that allow pre-existing
-or duplicate entries to be removed from new K2 EPIC catalogs.
+This Python module adds three tools to the command line,
+`epicwash`, `epicwash-prepare`, and `epicwash-renumber`,
+that allow pre-existing or duplicate entries to be removed
+from new K2 EPIC catalogs, and renumber the EPIC IDs of the others.
 
 This repository is unlikely to be of any interest to you,
 unless you are the soul in charge of producing the EPIC catalog
@@ -49,10 +50,37 @@ $ epicwash --epic epic.fits --output c12-fixed.dmc.dat c12.dmc.dat
 This produces the file `c12-fixed.dmc.dat`, which should not contain
 any duplicates.
 
+Finally, we use the `epicwash-renumber` command to re-assign the EPIC IDs
+from a given EPIC ID starting point, e.g. 24589908:
+
+```
+$ epicwash-renumber --output c12-fixed-and-renumbered.dmc.dat c12-fixed.dmc.dat 24589908
+```
+
 Next step: party, we're done!
 
 
 ## Documentation
+
+`epicwash-prepare` is used as follows:
+```
+$ epicwash-prepare --help
+usage: epicwash-prepare [-h] [-o FILENAME] [-m MATCHING_RADIUS]
+                        filename [filename ...]
+
+Extract ra & dec from a set of EPIC catalogs and write them to a FITS table.
+Such a table can then be used as input for the `epicwash` command.
+
+positional arguments:
+  filename              EPIC catalog in DMC format
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -o FILENAME, --output FILENAME
+                        output filename (default: epic.fits)
+  -m MATCHING_RADIUS, --matching-radius MATCHING_RADIUS
+                        cross-matching distance in arcsec (default: 0.05)
+```
 
 `epicwash` is used as follows:
 ```
@@ -76,22 +104,19 @@ optional arguments:
                         entries in col1 (ra) and col2 (dec)
 ```
 
-`epicwash-prepare` is used as follows:
+`epicwash-renumber` is used as follows:
 ```
-$ epicwash-prepare --help
-usage: epicwash-prepare [-h] [-o FILENAME] [-m MATCHING_RADIUS]
-                        filename [filename ...]
+epicwash-renumber --help
+usage: epicwash-renumber [-h] [-o FILENAME] filename epicid
 
-Extract ra & dec from a set of EPIC catalogs and write them to a FITS table.
-Such a table can then be used as input for the `epicwash` command.
+Assigns new EPIC IDs to all catalog entries.
 
 positional arguments:
   filename              EPIC catalog in DMC format
+  epicid                Desired EPIC ID of the first entry.
 
 optional arguments:
   -h, --help            show this help message and exit
   -o FILENAME, --output FILENAME
-                        output filename (default: epic.fits)
-  -m MATCHING_RADIUS, --matching-radius MATCHING_RADIUS
-                        cross-matching distance in arcsec (default: 0.05)
+                        output filename. Adds suffix '-renumbered' by default.
 ```
