@@ -101,12 +101,17 @@ def epicwash(input_fn, output_fn=None, epic_fn=None, matching_radius=0.1):
     else:
         csv_noepic_fn = csv_nodupes_fn
 
+    # Remove the header line
+    csv_noheader_fn = csv_noepic_fn + "-noheader"
+    syscall("""grep -ve ^col1 {} > {}""".format(csv_noepic_fn, csv_noheader_fn))
+
     logging.info("Writing {}".format(output_fn))
-    convert_to_dmc(input_fn=csv_noepic_fn, output_fn=output_fn)
+    convert_to_dmc(input_fn=csv_noheader_fn, output_fn=output_fn)
 
     logging.info("Cleaning up temporary files.")
     os.remove(csv_fn)
     os.remove(csv_nodupes_fn)
+    os.remove(csv_noheader_fn)
     if epic_fn is not None:
         os.remove(csv_noepic_fn)
 
